@@ -2,26 +2,23 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
-const User = require("../model/user");
+const config=require("config");
+const User = require("../../model/user");
+const{successResponse,
+  unauthorized,
+  notFound,
+  other
+}=require("../../helpers/response");
+const asyncHandler=require("../../helpers/async");
+const auth=require("../../middleware/auth");
 
-//@route         POST api/users
+//@route         POST (api/users)
 //@description   register user
 //@access        public
 router.post(
   "/",
-  [
-    check("name", "Please enter a Name").not().isEmpty(),
-    check("email", "Please enter a valid email").isEmail(),
-    check("password", "Password should have atleast 5 characters").isLength({
-      min: 5,
-    }),
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
+  
     try {
       const { name, email, password, college, branch } = req.body;
       let user = await User.findOne({
