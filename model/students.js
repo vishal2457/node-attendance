@@ -11,7 +11,8 @@ const studentSchema = new Schema({
     default: null,
   },
   classId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "class",
     default: null,
   },
   percent: {

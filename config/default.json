@@ -1,4 +1,4 @@
 {
-    "mongoURI": "mongodb://localhost:27017/attendance",
-    "jwtSecret": "asecrettoken"
+  "mongoURI": "mongodb+srv://vishal2457:blackdoor22@attendance-pq7eg.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "asecrettoken"
 }
