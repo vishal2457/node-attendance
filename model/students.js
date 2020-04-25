@@ -6,7 +6,7 @@ const studentSchema = new Schema({
     type: String,
     default: null,
   },
-  class: {
+  className: {
     type: String,
     default: null,
   },
