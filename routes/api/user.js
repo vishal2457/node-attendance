@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const User = require("../../model/user");
+const User = require("../../model/User");
 const {
   successResponse,
   unauthorized,
@@ -13,7 +13,7 @@ const {
 const asyncHandler = require("../../helpers/async");
 const auth = require("../../middleware/auth");
 
-//@route         POST (api/users)
+//@route         POST 
 //@description   register user
 //@access        public
 router.post("/", async (req, res) => {
@@ -63,5 +63,20 @@ router.post("/", async (req, res) => {
     return res.status(500).send({ error: err, msg: "server error" });
   }
 });
+
+
+//get all teachers(users)
+//@route Get
+
+router.get("/",asyncHandler(async (req, res) => {
+    const users = await User.find().lean();
+       if (!users) {
+      return notFound(res, "No user found");
+    }
+    successResponse(res, users, "this are the users");
+  })
+);
+
+
 
 module.exports = router;
