@@ -2,10 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const classSchema = new Schema({
-  className: {
-    type: String,
-    default: null,
+  
+  semester:{
+    type:String,
+    default:null,
   },
+
+  branch: {
+   type:String, 
+   default:null
+  },
+
   subject: {
     type: String,
     default: null,

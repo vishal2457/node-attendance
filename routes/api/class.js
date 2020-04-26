@@ -17,10 +17,12 @@ router.post(
     "/",
     auth,
     asyncHandler(async (req, res) => {
-      const { className,subject} = req.body;
+        const user= await User.findById(req.user.id).select("-password");
+      const {semester,subject} = req.body;
       const newclass = new Class({
-        className,
+        semester,
         subject,
+        branch:user.branch,
         date: Date.now(),
         userId: req.user.id,
       });
@@ -36,8 +38,37 @@ router.post(
   );
   
 
+ //get all class created by teachers
+ router.get(
+    "/",
+    auth,
+    asyncHandler(async (req, res) => {
+      const newclass = await Class.find().lean().sort({ date: -1 });
+      if (!newclass) {
+        return notFound(res, "Clubs not found");
+      }
+      successResponse(res, newclass, "All class");
+    })
+  );
+
+  //delete a class
+ router.delete("/:id",auth,asyncHandler(async(req,res)=>{
+     const newclass= await Class.findById(req.params.id);
+
+     if(!newclass)
+     {
+         return notFound(res,"Class not found");
+     }
+
+     await Class.deleteOne({_id:req.params.id});
+     successResponse(res," Class deleted successfilly"); 
+    
+ }));
+
+
+
   //create student record
-  router.post("addstudents/:id",auth,asyncHandler(async(req,res)=>{
+  router.post("/addstudents/:id",auth,asyncHandler(async(req,res)=>{
       const newclass=await Class.findById(req.params.id);
 
       if(!newclass)
@@ -45,11 +76,14 @@ router.post(
           return notFound(res,"Class Not found")
       };
 
-      const {name,className}=req.body;
- 
+      const {name}=req.body;
+      const user= await User.findById(req.user.id).select("-password");
+    //   const oldclass= await Class.findById(req.params.id).select("-password");
       const student=new Student({
           name,
-          className,
+          semester:newclass.semester,
+          branch:user.branch,
+          classId:req.params.id
       });
  
      await student.save();
