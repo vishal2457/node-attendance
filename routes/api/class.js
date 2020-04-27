@@ -54,10 +54,15 @@ router.post(
   //delete a class
  router.delete("/:id",auth,asyncHandler(async(req,res)=>{
      const newclass= await Class.findById(req.params.id);
-
+      
      if(!newclass)
      {
          return notFound(res,"Class not found");
+     }
+ 
+     if(newclass.userId !== req.user.id)
+     {
+         return unauthorized(res,"You are noy authorized person to perform this action..");
      }
 
      await Class.deleteOne({_id:req.params.id});
