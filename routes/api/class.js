@@ -22,6 +22,7 @@ router.post(
       const newclass = new Class({
         semester,
         subject,
+        teacher:user.name,
         branch:user.branch,
         date: Date.now(),
         userId: req.user.id,
@@ -60,8 +61,6 @@ router.post(
          return notFound(res,"Class not found");
      }
 
-    
- 
      if(newclass.userId != req.user.id)
      {
          return unauthorized(res,"You are noy authorized person to perform this action..");
@@ -97,6 +96,40 @@ router.post(
      successResponse(res,student,"Students are successfully registered ");
 
   }));
+
+
+  //get all students record
+  router.get("/getstudents",auth,asyncHandler(async(req,res)=>{
+    //   const newclass= await Class.findById(req.params.id);
+    const student = await Student.find().lean().sort({ date: -1 });
+
+    //   if(!newclass)
+    //   {
+    //       return notFound(res,"Class Not found")
+    //   };
+
+      if(!student)
+      {
+         return notFound(res," Students not found"); 
+      }
+      successResponse(res,student,"students record...");
+
+  }));
+
+
+//delete student record
+router.delete("/student/:id",auth,asyncHandler(async(req,res)=>{
+    const student= await Student.findById(req.params.id);
+    if(!student)
+    {
+        return notFound(res,"student not found");
+    }
+
+    await Class.deleteOne({_id:req.params.id});
+    successResponse(res," student deleted successfilly"); 
+   
+}));
+
 
 
   module.exports=router;

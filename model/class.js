@@ -21,6 +21,11 @@ const classSchema = new Schema({
     type: Date,
     default: null,
   },
+
+   teacher:{
+     type:String,
+     default:null
+   },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "user",
