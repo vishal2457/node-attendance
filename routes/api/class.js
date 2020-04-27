@@ -59,8 +59,10 @@ router.post(
      {
          return notFound(res,"Class not found");
      }
+
+    
  
-     if(newclass.userId !== req.user.id)
+     if(newclass.userId != req.user.id)
      {
          return unauthorized(res,"You are noy authorized person to perform this action..");
      }
