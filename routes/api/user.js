@@ -13,7 +13,7 @@ const {
 const asyncHandler = require("../../helpers/async");
 const auth = require("../../middleware/auth");
 
-//@route         POST 
+//@route         POST
 //@description   register user
 //@access        public
 router.post("/", async (req, res) => {
@@ -64,19 +64,19 @@ router.post("/", async (req, res) => {
   }
 });
 
-
 //get all teachers(users)
 //@route Get
 
-router.get("/",asyncHandler(async (req, res) => {
+router.get(
+  "/",
+  auth,
+  asyncHandler(async (req, res) => {
     const users = await User.find().lean();
-       if (!users) {
+    if (!users) {
       return notFound(res, "No user found");
     }
     successResponse(res, users, "this are the users");
   })
 );
-
-
 
 module.exports = router;
