@@ -6,9 +6,13 @@ const studentSchema = new Schema({
     type: String,
     default: null,
   },
-  className: {
+   semester: {
     type: String,
     default: null,
+  },
+  branch:{
+    type:String,
+    default:null
   },
   classId: {
     type: Schema.Types.ObjectId,
