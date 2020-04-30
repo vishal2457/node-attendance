@@ -78,5 +78,32 @@ router.get("/",asyncHandler(async (req, res) => {
 );
 
 
+//@route         GET api/user/me
+//@description   get current user
+//@access        private
+router.get(
+  "/me",
+  auth,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id).lean().select("-password")
 
+    if (!user) {
+      return notFound(res, "User not found");
+    }
+ 
+    
+    // if(newclass.userId = req.user.id)
+    // {
+    //     return unauthorized(res,"You are not authorized person to perform this action..");
+    // }
+
+    const classes = await Class.find({ userId : req.user.id }).lean();
+
+    const data = {
+      user,
+      classes,
+    };
+    successResponse(res, data, "Logged in users profile");
+  })
+);
 module.exports = router;
