@@ -6,22 +6,34 @@ const studentSchema = new Schema({
     type: String,
     default: null,
   },
-   semester: {
+  semester: {
     type: String,
     default: null,
   },
-  branch:{
-    type:String,
-    default:null
+  branch: {
+    type: String,
+    default: null,
   },
   classId: {
     type: Schema.Types.ObjectId,
     ref: "class",
     default: null,
   },
+  enroll: {
+    type: Number,
+    default: String,
+  },
   percent: {
     type: String,
     default: null,
+  },
+  present: {
+    type: Boolean,
+    default: true,
+  },
+  absent: {
+    type: Boolean,
+    default: 0,
   },
   isSafe: {
     type: String,

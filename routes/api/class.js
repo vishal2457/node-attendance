@@ -115,14 +115,7 @@ router.get(
   "/getstudents",
   auth,
   asyncHandler(async (req, res) => {
-    //   const newclass= await Class.findById(req.params.id);
     const student = await Student.find().lean().sort({ date: -1 });
-
-    //   if(!newclass)
-    //   {
-    //       return notFound(res,"Class Not found")
-    //   };
-
     if (!student) {
       return notFound(res, " Students not found");
     }

@@ -6,22 +6,32 @@ const attSchema = new Schema({
     type: Date,
     default: null,
   },
-  studentId: {
-    type: Schema.Types.ObjectId,
-    ref: "student",
-    default: null,
-  },
-  studenetName: {
-    type: String,
-    default: null,
-  },
-  isPresent: {
-    type: Boolean,
-    default: true,
-  },
-  classId: {
-    type: Schema.Types.ObjectId,
-    ref: "class",
-    default: null,
-  },
+  present: [
+    {
+      student: {
+        type: Schema.Types.ObjectId,
+        ref: "students",
+        default: null,
+      },
+      name: {
+        type: String,
+        default: null,
+      },
+    },
+  ],
+  absent: [
+    {
+      student: {
+        type: Schema.Types.ObjectId,
+        ref: "students",
+        default: null,
+      },
+      name: {
+        type: String,
+        default: null,
+      },
+    },
+  ],
 });
+
+module.exports = attendance = mongoose.model("attendance", attSchema);
