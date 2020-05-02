@@ -32,21 +32,8 @@ router.post(
       if (err) {
         return res.send(err);
       }
+      successResponse(res, newclass, "All class");
     });
-    successResponse(res, newclass, "New class created successfully");
-  })
-);
-
-//get all class created by teachers
-router.get(
-  "/",
-  auth,
-  asyncHandler(async (req, res) => {
-    const newclass = await Class.find().lean().sort({ date: -1 });
-    if (!newclass) {
-      return notFound(res, "Clubs not found");
-    }
-    successResponse(res, newclass, "All class");
   })
 );
 
@@ -64,77 +51,12 @@ router.delete(
     if (newclass.userId != req.user.id) {
       return unauthorized(
         res,
-        "You are noy authorized person to perform this action.."
+        "You are not authorized person to perform this action.."
       );
     }
 
     await Class.deleteOne({ _id: req.params.id });
     successResponse(res, " Class deleted successfilly");
-  })
-);
-
-//create student record
-router.post(
-  "/addstudents/:id",
-  auth,
-  asyncHandler(async (req, res) => {
-    const newclass = await Class.findById(req.params.id);
-
-    await newclass.save(async (err) => {
-      if (err) {
-        return res.send(err);
-      }
-    });
-    successResponse(res, newclass, "New class created successfully");
-  })
-);
-
-//create student record
-router.post(
-  "/addstudents/:id",
-  auth,
-  asyncHandler(async (req, res) => {
-    const newclass = await Class.findById(req.params.id);
-    if (!newclass) {
-      return notFound(res, "Class Not found");
-    }
-    const { name, className } = req.body;
-    const student = new Student({
-      name,
-      className,
-      classId: req.params.id,
-    });
-
-    await student.save();
-    successResponse(res, student, "Student successfully registered ");
-  })
-);
-
-//get all students record
-router.get(
-  "/getstudents",
-  auth,
-  asyncHandler(async (req, res) => {
-    const student = await Student.find().lean().sort({ date: -1 });
-    if (!student) {
-      return notFound(res, " Students not found");
-    }
-    successResponse(res, student, "students record...");
-  })
-);
-
-//delete student record
-router.delete(
-  "/student/:id",
-  auth,
-  asyncHandler(async (req, res) => {
-    const student = await Student.findById(req.params.id);
-    if (!student) {
-      return notFound(res, "student not found");
-    }
-
-    await Student.deleteOne({ _id: req.params.id });
-    successResponse(res, " student deleted successfilly");
   })
 );
 
