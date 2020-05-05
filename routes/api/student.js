@@ -21,11 +21,12 @@ const asyncHandler=require("../../helpers/async");
         return notFound(res,"Class Not found")
     };
 
-    const {name}=req.body;
+    const {name,enroll}=req.body;
     const user= await User.findById(req.user.id).select("-password");
   //   const oldclass= await Class.findById(req.params.id).select("-password");
     const student=new Student({
         name,
+        enroll,    
         // userId:req.user.id,
         subject:newclass.subject,
         semester:newclass.semester,
@@ -41,13 +42,8 @@ const asyncHandler=require("../../helpers/async");
 
 //get all students record
 router.get("/",auth,asyncHandler(async(req,res)=>{
-  //   const newclass= await Class.findById(req.params.id);
+ 
   const student = await Student.find().lean().sort({ date: -1 });
-
-  //   if(!newclass)
-  //   {
-  //       return notFound(res,"Class Not found")
-  //   };
 
     if(!student)
     {
@@ -57,7 +53,24 @@ router.get("/",auth,asyncHandler(async(req,res)=>{
 
 }));
 
-//delete a class
+
+
+//get student from specific class
+router.get("/:id",auth,asyncHandler(async(req,res)=>{
+ 
+  const student = await Student.find({classId:req.params.id}).lean();
+
+    if(!student)
+    {
+       return notFound(res," Students not found"); 
+    }
+    successResponse(res,student,"students record...");
+
+}));
+
+
+
+//delete a student
 router.delete("/:id",auth,asyncHandler(async(req,res)=>{
 const student= await Student.findById(req.params.id);
 // const newclass=await Class.findById(req.params.id);  
@@ -65,11 +78,6 @@ if(!student)
 {
     return notFound(res,"student not found");
 }
-
-// if(student.classId != req.params.id)
-// {
-//     return unauthorized(res,"You are not authorized person to perform this action..");
-// }
 
 await Student.deleteOne({_id:req.params.id});
 successResponse(res," student deleted successfilly"); 

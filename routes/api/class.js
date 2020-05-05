@@ -37,6 +37,25 @@ router.post(
   })
 );
 
+
+router.get("/",auth,asyncHandler(async(req,res)=>{
+    const newclass= await Class.find().lean();
+  // const student = await Student.find({classId:req.params.id}).lean();
+
+    if(!newclass)
+    {
+        return notFound(res,"Class Not found")
+    };
+
+    // if(!student)
+    // {
+    //    return notFound(res," Students not found"); 
+    // }
+    successResponse(res,newclass,"All class...");
+
+}));
+
+
 //delete a class
 router.delete(
   "/:id",
