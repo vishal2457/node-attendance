@@ -23,15 +23,14 @@ router.post(
     var presentArr = [];
     var absentArr = [];
     for (let singleStudent of student) {
-      singleStudent.present = req.body.present;
-      singleStudent.absent = req.body.absent;
-      if (singleStudent.present) {
+      singleStudent.isPresent = req.body.isPresent;
+      if (singleStudent.isPresent) {
         newStudent = {
           student: singleStudent._id,
           name: singleStudent.name,
         };
         presentArr.push(newStudent);
-      } else if (singleStudent.absent) {
+      } else if (!singleStudent.isPresent) {
         newStudent = {
           student: singleStudent._id,
           name: singleStudent.name,
@@ -39,7 +38,6 @@ router.post(
         absentArr.push(newStudent);
       }
     }
-
     const newAtt = new Attendance({
       date: Date.now(),
       present: presentArr,

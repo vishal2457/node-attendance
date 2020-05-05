@@ -14,9 +14,9 @@ const studentSchema = new Schema({
     type: String,
     default: null,
   },
-  subject:{
-    type:String,
-    default:null
+  subject: {
+    type: String,
+    default: null,
   },
   classId: {
     type: Schema.Types.ObjectId,
@@ -31,13 +31,9 @@ const studentSchema = new Schema({
     type: String,
     default: null,
   },
-  present: {
-    type: Boolean,
-    default: true,
-  },
-  absent: {
-    type: Boolean,
-    default: 0,
+  isPresent: {
+    type: String,
+    default: null,
   },
   isSafe: {
     type: String,
