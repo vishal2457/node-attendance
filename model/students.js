@@ -22,6 +22,11 @@ const studentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "class",
     default: null,
+  }, 
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+    default: null,
   },
   enroll: {
     type: Number,
