@@ -1,8 +1,6 @@
 const express = require("express");
-
-//import connection of db
+const cors = require("cors");
 const connectDB = require("./config/db");
-
 const bodyparser = require("body-parser");
 
 const app = express();
@@ -14,7 +12,12 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
 // app.use(express.static(_dirname +"/"));
-
+app.use(
+  cors({
+    origin: ["http://localhost:3001", "http://localhost:4200"],
+    credentials: true,
+  })
+);
 //define routes
 app.use("/user", require("./routes/api/user"));
 app.use("/auth", require("./routes/api/auth"));

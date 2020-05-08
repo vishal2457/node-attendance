@@ -6,6 +6,15 @@ const attSchema = new Schema({
     type: Date,
     default: null,
   },
+  percent: {
+    type: String,
+    default: null,
+  },
+  classId: {
+    type: Schema.Types.ObjectId,
+    ref: "class",
+    default: null,
+  },
   present: [
     {
       student: {
