@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const Student = require("../../model/students");
 const Attendance = require("../../model/attendance");
+const Class=require("../../model/class");
 const {
   successResponse,
   unauthorized,
@@ -70,5 +71,37 @@ router.get(
 );
 
 //count each students attendance percentage in class (try to implement this)
+router.get("/new/:classId",auth,asyncHandler(async(req,res)=>{
+const student=await Student.findById(req.params.classId).lean();
+
+if(!student)
+{
+  return notFound(res,"Students  not found ");
+}
+
+const presents=await Attendance.findById(req.params.present);
+const days=await Attendance.findById(req.params.date);
+for(let singleStudent of student)
+{
+  singleStudent.percent = req.body.percent;
+
+  var percent;
+   if(presents.length > 0) 
+    {
+       percent=(presents.length*100)/days.length;
+    }   
+}
+
+ const newdata=new Student({
+   percent:percent,
+ });
+
+ await student.save();
+ successResponse(res,newdata,"Avg attendance of particular student conuted succesfully ");
+  
+}));
+
+
+
 
 module.exports = router;
